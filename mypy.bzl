@@ -106,6 +106,7 @@ def _mypy_rule_impl(ctx, is_aspect = False):
     base_rule = ctx
     if is_aspect:
         base_rule = ctx.rule
+    print(DEBUG_PREFIX + "Running on {}".format(base_rule.attr.name))
 
     mypy_config_file = ctx.file._mypy_config
 
