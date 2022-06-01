@@ -119,8 +119,8 @@ def _mypy_rule_impl(ctx, is_aspect = False):
     if is_aspect:
         base_rule = ctx.rule
     print(DEBUG_PREFIX + "Running on {}".format(base_rule.attr.name))
-    print(DEBUG_PREFIX + "bin_dir = {}".format(ctx.bin_dir))
-    print(DEBUG_PREFIX + "gen_dir = {}".format(ctx.gen_dir))
+    print(DEBUG_PREFIX + "bin_dir = {}".format(ctx.bin_dir.path))
+    #print(DEBUG_PREFIX + "gen_dir = {}".format(ctx.gen_dir))
 
     mypy_config_file = ctx.file._mypy_config
 
