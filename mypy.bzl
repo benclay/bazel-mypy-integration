@@ -107,7 +107,7 @@ def _extract_transitive_imports(deps):
     for dep in deps:
         if MyPyStubsInfo not in dep and PyInfo in dep and not _is_external_dep(dep):
             # TODO: Need a label here
-            transitive_deps.extend(_extract_imports(dep[PyInfo].imports, ))
+            #transitive_deps.extend(_extract_imports(dep[PyInfo].imports, ))
     return transitive_imports
 
 def _mypy_rule_impl(ctx, is_aspect = False):
