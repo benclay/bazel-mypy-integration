@@ -14,7 +14,7 @@ MyPyAspectInfo = provider(
 
 # Switch to True only during debugging and development.
 # All releases should have this as False.
-DEBUG = False
+DEBUG = True
 
 VALID_EXTENSIONS = ["py", "pyi"]
 
