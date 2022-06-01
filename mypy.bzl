@@ -18,6 +18,8 @@ DEBUG = True
 
 VALID_EXTENSIONS = ["py", "pyi"]
 
+DEBUG_PREFIX = "BEN_2022: "
+
 DEFAULT_ATTRS = {
     "_template": attr.label(
         default = Label("//templates:mypy.sh.tpl"),
@@ -89,7 +91,7 @@ def _extract_imports(imports, label):
     # src/main/java/com/google/devtools/build/lib/bazel/rules/python/BazelPythonSemantics.java
     mypypath_parts = []
     for import_ in imports:
-        print("BEN_2022: examining import {}".format(import_))
+        print(DEBUG_PREFIX + "examining import {}".format(import_))
         if import_.startswith("/"):
             # buildifier: disable=print
             print("ignoring invalid absolute path '{}'".format(import_))
@@ -120,6 +122,8 @@ def _mypy_rule_impl(ctx, is_aspect = False):
 
     if hasattr(base_rule.attr, "imports"):
         mypypath_parts = _extract_imports(base_rule.attr.imports, ctx.label)
+    else:
+        print(DEBUG_PREFIX + "No imports!")
 
     final_srcs_depset = depset(transitive = transitive_srcs_depsets +
                                             [depset(direct = direct_src_files)])
