@@ -104,19 +104,7 @@ def _extract_imports(imports, label):
 
 def _extract_transitive_imports(deps):
     transitive_imports = []
-    for dep in deps:
-        if MyPyStubsInfo not in dep and PyInfo in dep and not _is_external_dep(dep):
-            print(DEBUG_PREFIX + "Attempting to examine transitive imports in dep {}, imports: {}".format(dep, dep[PyInfo].imports.to_list()))
-            for import_ in dep[PyInfo].imports.to_list():
-                if "pip_dep" in import_:
-                    print(DEBUG_PREFIX + "Skipping pip dep {}, figure this out later".format(import_))
-                else:
-                    transitive_imports.append(import_)
-            ## TODO: Needs work
-            #if '.' in dep[PyInfo].imports.to_list():
-            #    print(DEBUG_PREFIX + "Found dot import in dep {}, adding {} to mypy path".format(dep, dep.label.package))
-            #    transitive_imports.append(dep.label.package)
-            #    #transitive_imports.extend(_extract_imports(dep[PyInfo].imports.to_list(), dep.label))
+
     return transitive_imports
 
 def _mypy_rule_impl(ctx, is_aspect = False):
@@ -140,7 +128,21 @@ def _mypy_rule_impl(ctx, is_aspect = False):
     if hasattr(base_rule.attr, "deps"):
         transitive_srcs_depsets = _extract_transitive_deps(base_rule.attr.deps)
         stub_files = _extract_stub_deps(base_rule.attr.deps)
-        mypypath_parts.extend(_extract_transitive_imports(base_rule.attr.deps))
+        
+        # Pull this out later
+        for dep in base_rule.attr.deps:
+            if MyPyStubsInfo not in dep and PyInfo in dep and not _is_external_dep(dep):
+                print(DEBUG_PREFIX + "Attempting to examine transitive imports in dep {}, imports: {}".format(dep, dep[PyInfo].imports.to_list()))
+                for import_ in dep[PyInfo].imports.to_list():
+                    if "pip_dep" in import_:
+                        print(DEBUG_PREFIX + "Skipping pip dep {}, figure this out later".format(import_))
+                    else:
+                        mypypath_parts.append("{}/{}".format(ctx.bin_dir.path, import_))
+                ## TODO: Needs work
+                #if '.' in dep[PyInfo].imports.to_list():
+                #    print(DEBUG_PREFIX + "Found dot import in dep {}, adding {} to mypy path".format(dep, dep.label.package))
+                #    mypypath_parts.append(dep.label.package)
+                #    #mypypath_parts.extend(_extract_imports(dep[PyInfo].imports.to_list(), dep.label))
 
     if hasattr(base_rule.attr, "imports"):
         mypypath_parts.extend(_extract_imports(base_rule.attr.imports, ctx.label))
