@@ -89,6 +89,7 @@ def _extract_imports(imports, label):
     # src/main/java/com/google/devtools/build/lib/bazel/rules/python/BazelPythonSemantics.java
     mypypath_parts = []
     for import_ in imports:
+        print("BEN: examining import {}".format(import_))
         if import_.startswith("/"):
             # buildifier: disable=print
             print("ignoring invalid absolute path '{}'".format(import_))
