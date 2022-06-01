@@ -107,7 +107,7 @@ def _extract_transitive_imports(deps):
     for dep in deps:
         if MyPyStubsInfo not in dep and PyInfo in dep and not _is_external_dep(dep):
             # This makes a big assumption that everyone is importing `.`
-            if '.' im dep[PyInfo].imports.to_list():
+            if '.' in dep[PyInfo].imports.to_list():
                 print(DEBUG_PREFIX + "Found dot import in dep {}, adding {} to mypy path".format(dep, dep.label.package))
                 transitive_imports.append(dep.label.package)}
             #transitive_imports.extend(_extract_imports(dep[PyInfo].imports.to_list(), dep.label))
