@@ -96,6 +96,7 @@ def _extract_imports(imports, label):
             # buildifier: disable=print
             print("ignoring invalid absolute path '{}'".format(import_))
         elif import_ in ["", "."]:
+            print(DEBUG_PREFIX + "Adding mypypath_parts {}".format(label.package))
             mypypath_parts.append(label.package)
         else:
             mypypath_parts.append("{}/{}".format(label.package, import_))
