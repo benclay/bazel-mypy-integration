@@ -109,8 +109,8 @@ def _extract_transitive_imports(deps):
             # This makes a big assumption that everyone is importing `.`
             if '.' in dep[PyInfo].imports.to_list():
                 print(DEBUG_PREFIX + "Found dot import in dep {}, adding {} to mypy path".format(dep, dep.label.package))
-                transitive_imports.append(dep.label.package)}
-            #transitive_imports.extend(_extract_imports(dep[PyInfo].imports.to_list(), dep.label))
+                transitive_imports.append(dep.label.package)
+                #transitive_imports.extend(_extract_imports(dep[PyInfo].imports.to_list(), dep.label))
     return transitive_imports
 
 def _mypy_rule_impl(ctx, is_aspect = False):
