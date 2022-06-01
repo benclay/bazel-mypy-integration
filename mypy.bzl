@@ -107,7 +107,7 @@ def _extract_transitive_imports(deps):
     for dep in deps:
         if MyPyStubsInfo not in dep and PyInfo in dep and not _is_external_dep(dep):
             print(DEBUG_PREFIX + "Attempting to examine transitive imports in dep {}, imports: {}".format(dep, dep[PyInfo].imports.to_list()))
-            # This makes a big assumption that everyone is importing `.`
+            # TODO: Needs work
             if '.' in dep[PyInfo].imports.to_list():
                 print(DEBUG_PREFIX + "Found dot import in dep {}, adding {} to mypy path".format(dep, dep.label.package))
                 transitive_imports.append(dep.label.package)
@@ -119,6 +119,8 @@ def _mypy_rule_impl(ctx, is_aspect = False):
     if is_aspect:
         base_rule = ctx.rule
     print(DEBUG_PREFIX + "Running on {}".format(base_rule.attr.name))
+    print(DEBUG_PREFIX + "bin_dir = {}".format(ctx.bin_dir))
+    print(DEBUG_PREFIX + "gen_dir = {}".format(ctx.gen_dir))
 
     mypy_config_file = ctx.file._mypy_config
 
