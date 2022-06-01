@@ -102,6 +102,14 @@ def _extract_imports(imports, label):
             mypypath_parts.append("{}/{}".format(label.package, import_))
     return mypypath_parts
 
+def _extract_transitive_imports(deps):
+    transitive_imports = []
+    for dep in deps:
+        if MyPyStubsInfo not in dep and PyInfo in dep and not _is_external_dep(dep):
+            # TODO: Need a label here
+            transitive_deps.extend(_extract_imports(dep[PyInfo].imports, ))
+    return transitive_imports
+
 def _mypy_rule_impl(ctx, is_aspect = False):
     base_rule = ctx
     if is_aspect:
@@ -119,6 +127,7 @@ def _mypy_rule_impl(ctx, is_aspect = False):
         direct_src_files = _extract_srcs(base_rule.attr.srcs)
 
     if hasattr(base_rule.attr, "deps"):
+        print(DEBUG_PREFIX + "Deps: {}".format(deps))
         transitive_srcs_depsets = _extract_transitive_deps(base_rule.attr.deps)
         stub_files = _extract_stub_deps(base_rule.attr.deps)
 
