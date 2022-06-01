@@ -111,7 +111,7 @@ def _extract_transitive_imports(deps):
                 if "pip_dep" in import_:
                     print(DEBUG_PREFIX + "Skipping pip dep {}, figure this out later".format(import_))
                 else:
-                transitive_imports.append(import_)
+                    transitive_imports.append(import_)
             ## TODO: Needs work
             #if '.' in dep[PyInfo].imports.to_list():
             #    print(DEBUG_PREFIX + "Found dot import in dep {}, adding {} to mypy path".format(dep, dep.label.package))
