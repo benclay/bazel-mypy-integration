@@ -106,6 +106,7 @@ def _extract_transitive_imports(deps):
     transitive_imports = []
     for dep in deps:
         if MyPyStubsInfo not in dep and PyInfo in dep and not _is_external_dep(dep):
+            pass
             # TODO: Need a label here
             #transitive_deps.extend(_extract_imports(dep[PyInfo].imports, ))
     return transitive_imports
