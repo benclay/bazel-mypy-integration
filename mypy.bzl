@@ -107,11 +107,16 @@ def _extract_transitive_imports(deps):
     for dep in deps:
         if MyPyStubsInfo not in dep and PyInfo in dep and not _is_external_dep(dep):
             print(DEBUG_PREFIX + "Attempting to examine transitive imports in dep {}, imports: {}".format(dep, dep[PyInfo].imports.to_list()))
-            # TODO: Needs work
-            if '.' in dep[PyInfo].imports.to_list():
-                print(DEBUG_PREFIX + "Found dot import in dep {}, adding {} to mypy path".format(dep, dep.label.package))
-                transitive_imports.append(dep.label.package)
-                #transitive_imports.extend(_extract_imports(dep[PyInfo].imports.to_list(), dep.label))
+            for import_ in dep[PyInfo].imports.to_list():
+                if "pip_dep" in import_:
+                    print(DEBUG_PREFIX + "Skipping pip dep {}, figure this out later".format(import_))
+                else:
+                transitive_imports.append(import_)
+            ## TODO: Needs work
+            #if '.' in dep[PyInfo].imports.to_list():
+            #    print(DEBUG_PREFIX + "Found dot import in dep {}, adding {} to mypy path".format(dep, dep.label.package))
+            #    transitive_imports.append(dep.label.package)
+            #    #transitive_imports.extend(_extract_imports(dep[PyInfo].imports.to_list(), dep.label))
     return transitive_imports
 
 def _mypy_rule_impl(ctx, is_aspect = False):
