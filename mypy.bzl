@@ -128,7 +128,7 @@ def _mypy_rule_impl(ctx, is_aspect = False):
         direct_src_files = _extract_srcs(base_rule.attr.srcs)
 
     if hasattr(base_rule.attr, "deps"):
-        print(DEBUG_PREFIX + "Deps: {}".format(base_rule.attr.dep))
+        print(DEBUG_PREFIX + "Deps: {}".format(base_rule.attr.deps))
         transitive_srcs_depsets = _extract_transitive_deps(base_rule.attr.deps)
         stub_files = _extract_stub_deps(base_rule.attr.deps)
 
