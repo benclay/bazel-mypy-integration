@@ -134,6 +134,7 @@ def _mypy_rule_impl(ctx, is_aspect = False):
 
     mypypath_parts += [src_f.dirname for src_f in stub_files]
     mypypath = ":".join(mypypath_parts)
+    print(DEBUG_PREFIX + "Final mypypath: {}".format(mypypath))
 
     # Ideally, a file should be passed into this rule. If this is an executable
     # rule, then we default to the implicit executable file, otherwise we create
